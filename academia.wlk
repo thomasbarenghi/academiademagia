@@ -1,15 +1,18 @@
 // academia.wlk
-object academiaArcanaMagisterium {
+object academia {
   const equipo = []
   const candidatos = []
+  
+  method getCandidatos() = candidatos
+  
+  method getEquipo() = equipo
   
   method esCandidatoValido(
     mago
   ) = (mago.energiaMagica() > 40) && (mago.poderMagico() >= 30)
   
   method evaluarMago(mago) {
-    if (self.esCandidatoValido(mago)) equipo.push(mago)
-    else candidatos.push(mago)
+    if (self.esCandidatoValido(mago)) equipo.add(mago) else candidatos.add(mago)
   }
   
   method entrenarEquipo() {
@@ -22,9 +25,12 @@ object academiaArcanaMagisterium {
   
   method poderTotal() = equipo.sum({ mago => mago.poderMagico() })
   
-  method deltaEnergia() = equipo.max(
-    { mago => mago.energiaMagica() }
-  ) - equipo.min({ mago => mago.energiaMagica() })
+  method deltaEnergia() {
+    const maxEnergia = equipo.max({ mago => mago.energiaMagica() })
+    const minEnergia = equipo.min({ mago => mago.energiaMagica() })
+    
+    return (maxEnergia.energiaMagica() - minEnergia.energiaMagica()).abs()
+  }
   
   method poderesPorEncimaDe90() = equipo.filter(
     { mago => mago.poderMagico() > 90 }
@@ -33,7 +39,7 @@ object academiaArcanaMagisterium {
   method evaluarCandidatos() {
     candidatos.forEach(
       { mago => if (self.esCandidatoValido(mago)) {
-          equipo.push(mago)
+          equipo.add(mago)
           candidatos.remove(mago)
         } }
     )

@@ -50,7 +50,7 @@ object iris {
   }
   
   method sanarEscudo() {
-    if ((capacidadDeSanacion % 2) == 1) {
+    if (capacidadDeSanacion.odd() == 1) {
       escudoMagico.aumentarResistencia(150)
       escudoMagico.aumentarDurabilidad(100)
     } else {
@@ -67,7 +67,7 @@ object aldric {
   
   method energiaMagica() = 65 + (20 * entrenamientos)
   
-  method poder() = habilidadConBastones / 2
+  method poderMagico() = habilidadConBastones / 2
   
   method entrenar() {
     habilidadConBastones += bastonActual.bonusEntrenamiento()

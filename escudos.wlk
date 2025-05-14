@@ -14,4 +14,9 @@ object escudoMagico {
   method getResistencia() = resistencia
   
   method getDurabilidad() = durabilidad
+  
+  method resetear() {
+    resistencia = 400
+    durabilidad = 600
+  }
 }

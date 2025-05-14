@@ -1,0 +1,68 @@
+// t1.wtest
+import academia.*
+import magos.*
+import bastones.*
+import escudos.*
+
+describe "Tests de evaluación y entrenamiento de magos en la academia" {
+  test "Aldric no entra por bajo poder, queda como candidato" {
+    academia.evaluarMago(aldric)
+    assert.that(academia.getCandidatos().contains(aldric))
+    assert.notThat(academia.getEquipo().contains(aldric))
+  }
+  
+  test "Aldric entrena con bastón de fuego y entra al equipo" {
+    aldric.cambiarDeBaston(bastonDeFuego)
+    aldric.entrenar()
+    academia.evaluarMago(aldric)
+    assert.that(academia.getEquipo().contains(aldric))
+    assert.notThat(academia.getCandidatos().contains(aldric))
+  }
+  
+  test "Selene alterna Luz Lunar y entrena, poder sube pero no entra por baja energía" {
+    selene.alternarLuzLunar()
+    selene.entrenar()
+    academia.evaluarMago(selene)
+    assert.that(selene.poderMagico() == 120)
+    assert.notThat(academia.getEquipo().contains(selene))
+    assert.that(academia.getCandidatos().contains(selene))
+  }
+  
+  test "Selene entrena sin alternar Luz Lunar y entra al equipo" {
+    selene.entrenar()
+    academia.evaluarMago(selene)
+    assert.that(selene.energiaMagica() == 60)
+    assert.that(academia.getEquipo().contains(selene))
+  }
+  
+  test "Balthazar puede entrar al principio" {
+    academia.evaluarMago(balthazar)
+    assert.that(academia.getEquipo().contains(balthazar))
+  }
+  
+  test "Balthazar entrena y no entra" {
+    balthazar.entrenar()
+    balthazar.entrenar()
+    academia.evaluarMago(balthazar)
+    assert.that(balthazar.energiaMagica() == 65)
+    assert.that(balthazar.poderMagico() == 29)
+    assert.notThat(academia.getEquipo().contains(balthazar))
+  }
+  
+  test "Iris usa sanación en escudo, mejora resistencia y durabilidad" {
+    escudoMagico.resetear()
+    iris.sanarEscudo()
+    assert.equals(550, escudoMagico.getResistencia())
+    assert.equals(700, escudoMagico.getDurabilidad())
+  }
+  
+  test "Iris entrena y usa sanación en escudo, mejora resistencia y durabilidad" {
+    escudoMagico.resetear()
+    
+    iris.sanarEscudo()
+    iris.entrenar()
+    iris.sanarEscudo()
+    assert.equals(480, escudoMagico.getResistencia())
+    assert.equals(760, escudoMagico.getDurabilidad())
+  }
+}

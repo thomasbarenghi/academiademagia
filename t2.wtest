@@ -1,0 +1,43 @@
+import academia.*
+import magos.*
+import bastones.*
+import escudos.*
+
+describe "Reclutamiento completo y condiciones óptimas de la academia" {
+  test "Reclutar a todos y validar miembros iniciales" {
+    academia.evaluarMago(aldric)
+    academia.evaluarMago(selene)
+    academia.evaluarMago(balthazar)
+    academia.evaluarMago(iris)
+    
+    assert.that(academia.getEquipo().contains(balthazar))
+    assert.that(academia.getEquipo().contains(iris))
+    assert.notThat(academia.getEquipo().contains(aldric))
+    assert.notThat(academia.getEquipo().contains(selene))
+  }
+  
+  test "Entrenar a Selene y Balthazar, evaluar a todos y validar condiciones del equipo" {
+    selene.entrenar()
+    balthazar.entrenar()
+    
+    academia.evaluarMago(aldric)
+    academia.evaluarMago(selene)
+    academia.evaluarMago(balthazar)
+    academia.evaluarMago(iris)
+    
+    assert.that(academia.getEquipo().contains(selene))
+    assert.that(academia.getEquipo().contains(balthazar))
+    assert.that(academia.getEquipo().contains(iris))
+    assert.notThat(academia.getEquipo().contains(aldric))
+    
+    assert.that(selene.energiaMagica() == 60)
+    assert.equals(balthazar.energiaMagica(), 55)
+    assert.that(iris.energiaMagica() == 80)
+    
+    assert.equals(127, academia.poderTotal())
+    
+    assert.equals(20, academia.deltaEnergia())
+    
+    assert.that(academia.verificarCondicionesOptimas())
+  }
+}
